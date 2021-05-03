@@ -1,33 +1,18 @@
-import os
-import sys
-import torchvision.transforms as transforms
-from skimage.color import gray2rgb
 import numpy as np
-import os
-import sys
-import json
 import torch
-from torch.utils.data import DataLoader, Dataset
-from torch import nn
-
-from PIL import Image
-import numpy as np
-
-import matplotlib.pyplot as plt
-import numpy as np
-import scipy
-from torch.autograd import Variable
-
-from fnmatch import fnmatch
-from PIL import Image
-from skimage.transform import rescale, resize, downscale_local_mean
-from tqdm import tqdm
-from torch import optim
 import torch.nn.functional as F
-
+from torch import nn
+from torch import optim
+from torch.autograd import Variable
+from torch.utils.data import DataLoader
+from tqdm import tqdm
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
-def select_model(data_loader,batch_size,images,model_type='vgg',N_EPOCHS=5):
+
+
+def select_model(data_loader, batch_size, images,
+                 model_type='vgg', N_EPOCHS=5,
+                 verbose = False):
     """
     :param data_loader: input data loader
     :type data_loader: torch.utils.data.DataLoader
@@ -41,77 +26,85 @@ def select_model(data_loader,batch_size,images,model_type='vgg',N_EPOCHS=5):
     :type resnet_model_path: string
     :param N_EPOCHS: number of epochs for autoencoder model training
     :type N_EPOCHS: int
+    :param verbose: Does the program output information
+    :type verbose: bool
     :return: training result
     :rtype: numpy arrray
     """
- 
-    if model_type == 'vgg' or model_type=='both':
-        vgg_model = torch.hub.load('pytorch/vision:v0.6.0', 'vgg16', pretrained=True)
-        vgg_model.classifier = nn.Sequential(*[vgg_model.classifier[i] for i in range(4)])
+
+    if model_type == 'vgg' or model_type == 'both':
+        vgg_model = torch.hub.load(
+            'pytorch/vision:v0.6.0', 'vgg16', pretrained=True)
+        vgg_model.classifier = nn.Sequential(
+            *[vgg_model.classifier[i] for i in range(4)])
         vgg_model.to(device)
         vgg_model.eval()
-        vgg_out=np.zeros([len(images),4096])
-        for i, data in enumerate(data_loader):
-             with torch.no_grad():
-                print(i)
+        vgg_out = np.zeros([len(images), 4096])
+        for i, data in tqdm(enumerate(data_loader)):
+            with torch.no_grad():
+                if verbose:
+                    print(i)
                 value = data
                 test_value = Variable(value.to(device))
                 test_value = test_value.float()
                 out_ = vgg_model(test_value)
                 out_ = out_.to('cpu')
                 out_ = out_.detach().numpy()
-                vgg_out[i*batch_size:i*batch_size+len(out_)] = out_
+                vgg_out[i * batch_size:i * batch_size + len(out_)] = out_
 
         if model_type == 'vgg':
-            print(vgg_out.shape)
+            if verbose:
+                print(vgg_out.shape)
             return vgg_out
 
-    if model_type  == 'resnet' or model_type=='both':
+    if model_type == 'resnet' or model_type == 'both':
         res_model = torch.load('symmodel')
         res_model.to(device)
-        res_out = np.zeros([len(images),512])
-        for i, data in enumerate(data_loader):
-             with torch.no_grad():
-                print(i)
+        res_out = np.zeros([len(images), 512])
+        for i, data in tqdm(enumerate(data_loader)):
+            with torch.no_grad():
+                if verbose:
+                    print(i)
                 value = data
                 test_value = Variable(value.to(device))
                 test_value = test_value.float()
                 out_ = res_model(test_value)
                 out_ = out_.to('cpu')
                 out_ = out_.detach().numpy()
-                res_out[i*batch_size:i*batch_size+len(out_)] = out_
+                res_out[i * batch_size:i * batch_size + len(out_)] = out_
 
         if model_type == 'resnet':
-            print(res_out.shape)
+            if verbose:
+                print(res_out.shape)
             return res_out
 
-    if model_type=='both':
+    if model_type == 'both':
 
         class Encoder(nn.Module):
             def __init__(self):
-                super(Encoder,self).__init__()
-                self.dense = nn.Linear(4096,512)
+                super(Encoder, self).__init__()
+                self.dense = nn.Linear(4096, 512)
 
-            def forward(self,x):
+            def forward(self, x):
                 out = self.dense(x)
                 return out
 
         class Decoder(nn.Module):
             def __init__(self):
-                super(Decoder,self).__init__()
-                self.dense = nn.Linear(512,4096)
+                super(Decoder, self).__init__()
+                self.dense = nn.Linear(512, 4096)
 
-            def forward(self,x):
+            def forward(self, x):
                 out = self.dense(x)
                 return out
 
         class Auto(nn.Module):
-            def __init__(self,enc,dec):
+            def __init__(self, enc, dec):
                 super().__init__()
                 self.encoder = enc
                 self.decoder = dec
 
-            def forward(self,x):
+            def forward(self, x):
                 x = self.encoder(x)
                 x = self.decoder(x)
                 return x
@@ -121,14 +114,16 @@ def select_model(data_loader,batch_size,images,model_type='vgg',N_EPOCHS=5):
         auto_model = Auto(encoder, decoder).to(device)
         optimizer = optim.Adam(auto_model.parameters(), lr=1e-4)
         train_iterator = torch.utils.data.DataLoader(vgg_out,
-                                                     batch_size = batch_size,
-                                                     shuffle = False)
-        def loss_function(model,train_iterator,optimizer):
+                                                     batch_size=batch_size,
+                                                     shuffle=False)
+
+        def loss_function(model, train_iterator, optimizer):
 
             model.train()
             train_loss = 0
 
-            for x in tqdm(train_iterator, leave=True, total=len(train_iterator)):
+            for x in tqdm(train_iterator, leave=True,
+                          total=len(train_iterator)):
                 x = x.to(device, dtype=torch.float)
 
                 optimizer.zero_grad()
@@ -137,25 +132,24 @@ def select_model(data_loader,batch_size,images,model_type='vgg',N_EPOCHS=5):
 
                 # reconstruction loss
                 loss = F.mse_loss(x, predicted_x, reduction='mean')
+
                 # backward pass
                 train_loss += loss.item()
-
                 loss.backward()
+
                 # update the weights
                 optimizer.step()
 
             return train_loss
 
-
         for epoch in range(N_EPOCHS):
-
-            train_loss = loss_function(auto_model,train_iterator,optimizer)
+            train_loss = loss_function(auto_model, train_iterator, optimizer)
             train_loss /= len(train_iterator)
             print(f'Epoch {epoch}, Train Loss: {train_loss:.4f}')
             print('.............................')
 
-        auto_out = np.zeros([len(vgg_out),512])
-        for i, x in enumerate(train_iterator):
+        auto_out = np.zeros([len(vgg_out), 512])
+        for i, x in tqdm(enumerate(train_iterator)):
             with torch.no_grad():
                 value = x
                 test_value = Variable(value.to(device))
@@ -163,14 +157,16 @@ def select_model(data_loader,batch_size,images,model_type='vgg',N_EPOCHS=5):
                 embedding = encoder(test_value)
                 embedding1 = embedding.to('cpu')
                 embedding1 = embedding1.detach().numpy()
-        #        print(np.mean(embedding1))
-                auto_out[i*batch_size:i*batch_size+len(embedding1)] = embedding1
-                print(i)
+                auto_out[i * batch_size:i * batch_size +
+                         len(embedding1)] = embedding1
 
-        combine_out = np.concatenate((auto_out,res_out),axis=1)
-        print(combine_out.shape)
+        combine_out = np.concatenate((auto_out, res_out), axis=1)
+
+        if verbose:
+            print(combine_out.shape)
         return combine_out
-    
+
     else:
-        
-        raise NameError('Please insert valid model, like "vgg","resnet" or "both".')
+
+        raise NameError(
+            'Please insert valid model, like "vgg","resnet" or "both".')
