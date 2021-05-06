@@ -12,7 +12,7 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 def select_model(data_loader, batch_size, images,
                  model_type='vgg', N_EPOCHS=5,
-                 verbose = False):
+                 verbose=False):
     """
     :param data_loader: input data loader
     :type data_loader: torch.utils.data.DataLoader

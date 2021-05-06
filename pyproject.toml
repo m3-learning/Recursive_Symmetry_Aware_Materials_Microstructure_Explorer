@@ -1,0 +1,12 @@
+[build-system]
+requires = [
+    "setuptools>=42",
+    "wheel",
+    "matplotlib==3.2.2",
+    "numpy==1.18.5",
+    "pandas==1.0.5",
+    "pillow==7.2.0",
+    "bokeh==2.1.1",
+    "tqdm==4.47.0"
+]
+build-backend = "setuptools.build_meta"

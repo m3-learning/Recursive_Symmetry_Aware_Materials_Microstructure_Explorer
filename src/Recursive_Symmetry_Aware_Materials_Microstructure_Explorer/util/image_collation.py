@@ -6,8 +6,13 @@ import random
 import torchvision.transforms as transforms
 
 
-
 def image_collection(path, pattern="*.jpg"):
+    """
+    Tool to search folders for image files to project.
+    :param path: sets the path where to search for images
+    :param pattern: sets the pattern to search for. Can use wildcards
+    :return:
+    """
 
     # Create a directory of all file paths
     dir_jpg = []
@@ -36,23 +41,40 @@ def image_collection(path, pattern="*.jpg"):
 
 
 class image_dataset(Dataset):
-    'Characterizes a dataset for PyTorch'
+    """
+    Builds a Pytorch Dataset
+    """
 
     def __init__(self, images, transform=None, viz=transforms.Compose([
             transforms.Resize((224, 224)),
             transforms.ToTensor(),
     ])):
-        'Initialization'
+        '''
+        Initialization
+        :param images: input images
+        :param transform: transformation to be applied on evaluation
+        :param viz: transformation to be applied on visualization
+        '''
+
         self.images = images
         self.transform = transform
         self.viz_trans = viz
 
     def __len__(self):
-        'Denotes the total number of samples'
+        """
+        Denotes the total number of samples
+        :return:
+        """
+
         return len(self.images)
 
     def __getitem__(self, index):
-        'Generates one sample of data'
+        """
+        Generates one sample of data
+        :param index: Index that is selected
+        :return:
+        """
+
         # Select sample
         image = self.images[index].convert('RGB')
 
@@ -62,7 +84,12 @@ class image_dataset(Dataset):
         return image
 
     def __getitemviz__(self, index):
-        'Generates one sample of data'
+        """
+        Generates one sample for visualization
+        :param index: Index to show
+        :return:
+        """
+
         # Select sample
         image = self.images[index].convert('RGB')
 

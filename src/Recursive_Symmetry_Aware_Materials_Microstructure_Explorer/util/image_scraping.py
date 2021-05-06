@@ -1,7 +1,12 @@
-from google_images_download import google_images_download
-
 def download_images_from_google(names, path, num=25, verbose=True):
-
+    """
+    Tool to download files from google image search based on search criteria
+    :param names: list of strings to search
+    :param path: path where files will be saved
+    :param num: number of images to download in each catagory
+    :param verbose: True makes the function print intermediate actions
+    :return:
+    """
     # instantiation of the class to download images
     response = google_images_download.googleimagesdownload()
 
