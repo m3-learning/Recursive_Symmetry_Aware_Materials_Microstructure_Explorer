@@ -1,3 +1,5 @@
+from ..util.google_images_download import *
+
 def download_images_from_google(names, path, num=25, verbose=True):
     """
     Tool to download files from google image search based on search criteria
@@ -9,7 +11,7 @@ def download_images_from_google(names, path, num=25, verbose=True):
     :return:
     """
     # instantiation of the class to download images
-    response = google_images_download.googleimagesdownload()
+    response = googleimagesdownload()
 
     # converts the list to a string
     names = ''.join(str(i + ',') for i in names)
