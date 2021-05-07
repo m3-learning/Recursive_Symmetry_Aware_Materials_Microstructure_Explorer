@@ -5,4 +5,7 @@ pillow==7.2.0
 bokeh==2.1.1
 tqdm==4.47.0
 setuptools==49.2.0
+torch==1.8.1
+torchvisions==0.9.1
 selenium
+umap-learn
