@@ -8,6 +8,7 @@ import random
 def imscatter(x, y, images, number_images_shown, ax=None, zoom=1.0):
     """
     Function that plots the a 2d scatter plot with superimposed images
+
     :param x: x-positions
     :param y: y-positions
     :param images: images which are included
@@ -46,6 +47,7 @@ def imscatter(x, y, images, number_images_shown, ax=None, zoom=1.0):
 def plot_embedding(X, number_images_shown, size, imgs):
     """
     Function that plots the projection map
+
     :param X: Sets the position values and ranges
     :param number_images_shown: Selects the number of images to show
     :param size: Chooses the size of the images

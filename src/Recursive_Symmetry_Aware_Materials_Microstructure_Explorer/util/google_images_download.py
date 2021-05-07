@@ -46,6 +46,7 @@ args_list = ["keywords", "keywords_from_file", "prefix_keywords", "suffix_keywor
 def user_input():
     """
     Parser for the user inputs
+
     :return:
     """
     config = argparse.ArgumentParser()
@@ -216,6 +217,7 @@ class googleimagesdownload:
     def _extract_data_pack(self, page):
         """
         extracts data from selection
+
         :param page: page where data is extracted from
         :return: Information about the image found
         """
@@ -230,6 +232,7 @@ class googleimagesdownload:
     def _extract_data_pack_extended(self, page):
         """
         extracts data from selection
+
         :param page: page where data is extracted fro
         :return: Information about the image found
         """
@@ -243,6 +246,7 @@ class googleimagesdownload:
     def _extract_data_pack_ajax(self, data):
         '''
         Converts to JSON
+
         :param data:
         :return: JSON file
         '''
@@ -252,6 +256,7 @@ class googleimagesdownload:
     def _image_objects_from_pack(self, data):
         """
         Pull out image objects
+
         :param data:
         :return: image object from JSON file
         """
@@ -263,6 +268,7 @@ class googleimagesdownload:
     def download_page(self, url):
         """
         Downloads the entire content of a webpage
+
         :param url: URL where the webpage is located
         :return: Webpage information
         """
@@ -305,6 +311,8 @@ class googleimagesdownload:
     # Download Page for more than 100 images
     def download_extended_page(self, url, chromedriver):
         """
+        Downloads the page for more than 100 images
+
         :param url: Webpage to download
         :param chromedriver: version of chrome drives
         :return: webpage information as JSON
@@ -398,6 +406,7 @@ class googleimagesdownload:
     def replace_with_byte(self, match):
         '''
         Correcting the escape characters for python 2
+
         :param match: charcters to fix
         :return: fixed character
         '''
@@ -405,6 +414,8 @@ class googleimagesdownload:
 
     def repair(self, brokenjson):
         """
+        function that helps repair bad JSON files
+
         :param brokenjson: JSON file
         :return: Fixed JSON file
         """
@@ -416,6 +427,7 @@ class googleimagesdownload:
     def get_next_tab(self, s):
         """
         Finding 'Next Image' from the given raw page
+
         :param s: image id
         :return: information about the image
         """
@@ -453,6 +465,7 @@ class googleimagesdownload:
     def get_all_tabs(self, page):
         """
         Finding 'Next Image' from the given raw page
+
         :param page: URL for the page
         :return: the tabs that are looked at
         """
@@ -477,6 +490,7 @@ class googleimagesdownload:
     def format_object(self, object):
         """
         Formats the object in a readable format
+
         :param object: Raw object from web
         :return: Dictionary containing formatted object
         """
@@ -505,6 +519,7 @@ class googleimagesdownload:
     def single_image(self, image_url):
         """
         Function to download a single image
+
         :param image_url: URL for image
         :return: Encoded image
         """
@@ -552,6 +567,7 @@ class googleimagesdownload:
     def similar_images(self, similar_images):
         """
         Function that deals with similar images
+
         :param similar_images: urls
         :return: list without similar images
         """
@@ -608,6 +624,7 @@ class googleimagesdownload:
     def build_url_parameters(self, arguments):
         """
         Building URL parameters
+
         :param arguments: Constructs URL parameters for search
         :return:
         """
@@ -690,6 +707,7 @@ class googleimagesdownload:
                          similar_images, specific_site, safe_search):
         """
         Building main search of URL
+
         :param search_term: Search terms included
         :param params: Additional parameters
         :param url:  URL to search
@@ -727,6 +745,7 @@ class googleimagesdownload:
     def file_size(self, file_path):
         """
         Measures the files size
+
         :param file_path: Path where data is stored
         :return: Size of the files
         """
@@ -743,6 +762,7 @@ class googleimagesdownload:
     def keywords_from_file(self, file_name):
         """
         Keywords from file
+
         :param file_name: Name of the file to search
         :return: types of files to include in the search
         """
@@ -777,6 +797,7 @@ class googleimagesdownload:
                            thumbnail, thumbnail_only):
         """
         Function to make directories
+
         :param main_directory: Main directory where files will be stored
         :param dir_name: sub directory name
         :param thumbnail: thumbnail of image
@@ -819,6 +840,7 @@ class googleimagesdownload:
                                  socket_timeout, print_size, no_download, save_source, img_src, ignore_urls):
         """
         Function to download image thumbnails
+
         :param image_url: URL for file
         :param main_directory: Main directory where files will be stored
         :param dir_name: sub directory where files will be stored
@@ -910,6 +932,7 @@ class googleimagesdownload:
                        format, ignore_urls):
         """
         Function to download images
+
         :param image_url: URL where the images are located
         :param image_format: Format that the image is saved as
         :param main_directory: main directory where folders are located
@@ -1094,6 +1117,7 @@ class googleimagesdownload:
                        dir_name, limit, arguments):
         """
         function to get all items that are found
+
         :param image_objects: Image objects selected
         :param main_directory: Main directory where files are saved
         :param dir_name: subdirectory where file catagories are saved
@@ -1160,6 +1184,7 @@ class googleimagesdownload:
     def download(self, arguments):
         """
         Bulk download of files based on arguments
+
         :param arguments: Dictionary of arguments to consider
         :return:
         """
@@ -1211,6 +1236,7 @@ class googleimagesdownload:
     def download_executor(self, arguments):
         """
         Function that downloads files based on arguments
+
         :param arguments: Dictionary of arguments to consider
         :return:
         """
@@ -1386,6 +1412,7 @@ class googleimagesdownload:
 def main():
     """
     Main program
+
     :return:
     """
     records = user_input()
