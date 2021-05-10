@@ -7,6 +7,7 @@ from PIL import Image
 from matplotlib import offsetbox
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 import datetime
+
 # Import packages for Bokeh visualization demo
 from bokeh.models import ColumnDataSource, CustomJS, HoverTool, LassoSelectTool, BoxSelectTool, CrosshairTool
 from bokeh.models import HoverTool, CustomJS, Div, Button, TextInput
@@ -32,18 +33,23 @@ for opt, arg in opts:
            print(path)
            print(f'The path is {path}')
 
+if path[-1] == '/':
+  pass
+else:
+  path += '/'
+
 
 # Load the weights, activations, and images
-name_all = np.load(f'{path}/Data_name_all.npy')
-images = np.load(f'{path}/Data_images.npy')
+name_all = np.load(f'{path}Data_name_all.npy')
+images = np.load(f'{path}Data_images.npy')
 images = images * 255
 
-im = Image.open(f'{path}/test1.png')
+im = Image.open(f'{path}test1.png')
 im = im.convert("RGBA")
 imarray = np.array(im)
 imarray = np.flipud(imarray)
-X = np.load(f'{path}/Data_activations.npy')
-X_umap = np.load(f'{path}/Data_umap.npy')
+X = np.load(f'{path}Data_activations.npy')
+X_umap = np.load(f'{path}Data_umap.npy')
 x_min1, x_max1 = np.min(X_umap, 0), np.max(X_umap, 0)
 X_umap = ((X_umap - x_min1) / (x_max1 - x_min1)) * 15
 
@@ -107,7 +113,6 @@ data2 = pd.DataFrame(data2)
 def update(selected=None):
     data = pd.DataFrame(data1)
     s1.data = data
-    # s2.data = data
 
 
 # Plotting function

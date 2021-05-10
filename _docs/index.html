@@ -159,10 +159,23 @@
 by creating projections of images and allowing interactive filtering. This tool is packaged with two feature extractors,
 a VGG-16 based model and a symmetry aware model based on ResNet-34</p>
 <p><strong>Installation</strong></p>
-<p>Assuming your have a python distribution with <cite>pip</cite> installed. The package can be installed using:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install Recursive_Symmetry_Aware_Materials_Microstructure_Explorer
-</pre></div>
-</div>
+<p>To install use
+<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">Recursive_Symmetry_Aware_Materials_Microstructure_Explorer</span></code></p>
+<p>It is recommended that you install the package on a new conda env
+1. <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">create</span> <span class="pre">-name</span> <span class="pre">bokeh</span></code>
+2. <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">-c</span> <span class="pre">anaconda</span> <span class="pre">ipykernel</span></code>
+3. <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">ipykernel</span> <span class="pre">install</span> <span class="pre">--user</span> <span class="pre">--name=bokeh</span></code>
+4. <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">activate</span> <span class="pre">bokeh</span></code>
+5. <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">Recursive_Symmetry_Aware_Materials_Microstructure_Explorer</span></code></p>
+<p># Examples</p>
+<p>We include one example of this package.</p>
+<p>Within the repositiory download the two files in the <code class="docutils literal notranslate"><span class="pre">Examples</span></code> folder:</p>
+<p><code class="docutils literal notranslate"><span class="pre">Example_Image_Scraping_and_Collating.ipynb</span></code> - This is a notebook that scrapes images from google, this also has the code
+to collate the images from the folders.</p>
+<p><code class="docutils literal notranslate"><span class="pre">bokeh_server.py</span></code> - This contains the script for the graphical user interface.</p>
+<p>To spin up a server,</p>
+<p><code class="docutils literal notranslate"><span class="pre">bokeh</span> <span class="pre">serve</span> <span class="pre">bokeh_server.py</span> <span class="pre">--args</span> <span class="pre">-p</span> <span class="pre">path</span></code></p>
+<p>The Bokeh demo will be served at the local host: <a class="reference external" href="http://localhost:5006/bokeh_server">http://localhost:5006/bokeh_server</a></p>
 <div class="toctree-wrapper compound">
 </div>
 <span class="target" id="module-Recursive_Symmetry_Aware_Materials_Microstructure_Explorer"></span></div>
