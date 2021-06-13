@@ -9,3 +9,4 @@ torch==1.8.1
 selenium
 umap-learn
 torchvision
+moviepy
